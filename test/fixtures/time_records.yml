@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: MyString
+  day_id: MyString
+  amount: MyString
+  date: MyString
+
+two:
+  project_id: MyString
+  day_id: MyString
+  amount: MyString
+  date: MyString
