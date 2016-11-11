@@ -40,3 +40,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'active_model_serializers', '~> 0.10.2'
 gem 'rack-cors'
 gem 'rack-attack'
+
+gem 'slack-ruby-bot'
+gem 'celluloid-io'
+gem 'dotenv-rails', groups: [:development, :test]
