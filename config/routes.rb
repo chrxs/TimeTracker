@@ -7,6 +7,23 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :projects
 
+      resources :users, only: [:index] do
+        post 'time/:year/:month/:day', to: 'days#create', constraints: {
+          year: /\d{4}/,
+          month: /\d{2}/,
+          day: /\d{2}/,
+        }
+
+        get 'time(/:year(/:month(/:day)))', to: 'days#index', constraints: {
+          year: /\d{4}/,
+          month: /\d{2}/,
+          day: /\d{2}/,
+        }
+      end
+
+      get 'users/:id', to: 'users#show'
+      get 'myself', to: 'users#myself'
+
       post ':year/:month/:day', to: 'days#create', constraints: {
         year: /\d{4}/,
         month: /\d{2}/,

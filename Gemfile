@@ -33,6 +33,8 @@ group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", platform: :mri
   gem "dotenv-rails"
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
+  gem 'factory_girl_rails', '~> 4.8'
 end
 
 group :development do
@@ -49,3 +51,4 @@ gem 'rack-attack', '~> 5.0', '>= 5.0.1'
 gem 'jwt', '~> 1.5', '>= 1.5.6'
 gem 'simple_command', '~> 0.0.9'
 gem 'active_model_serializers', '~> 0.10.4'
+gem 'cancancan', '~> 1.16'
