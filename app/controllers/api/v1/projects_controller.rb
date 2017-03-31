@@ -1,6 +1,6 @@
 module Api::V1
   class ProjectsController < ApiController
-    before_action :set_project, only: [:show, :update, :destroy]
+    load_and_authorize_resource
 
     # GET /projects
     def index
@@ -40,11 +40,6 @@ module Api::V1
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_project
-        @project = Project.find(params[:id])
-      end
-
       # Only allow a trusted parameter "white list" through.
       def project_params
         params.permit(:name)

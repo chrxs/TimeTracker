@@ -4,7 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     @user = User.from_omniauth!(request.env["omniauth.auth"])
     sign_in @user
-    response.headers['Authorization'] = JsonWebToken.encode(user_id: @user.id)
+    response.headers['Authorization'] = JsonWebToken.encode(user: UserSerializer.new(@user).as_json)
     render json: { user: @user }, status: 200
   end
 end

@@ -8,13 +8,16 @@ Rails.application.routes.draw do
       resources :projects
 
       resources :users, only: [:index] do
-        post 'time/:year/:month/:day', to: 'days#create', constraints: {
+        get 'weekday_settings', to: 'weekday_settings#index'
+        put 'weekday_settings', to: 'weekday_settings#update_all'
+
+        post ':year/:month/:day', to: 'days#create', constraints: {
           year: /\d{4}/,
           month: /\d{2}/,
           day: /\d{2}/,
         }
 
-        get 'time(/:year(/:month(/:day)))', to: 'days#index', constraints: {
+        get '(/:year(/:month(/:day)))', to: 'days#index', constraints: {
           year: /\d{4}/,
           month: /\d{2}/,
           day: /\d{2}/,
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
 
       get 'users/:id', to: 'users#show'
       get 'myself', to: 'users#myself'
+      get 'weekday_settings', to: 'weekday_settings#index'
 
       post ':year/:month/:day', to: 'days#create', constraints: {
         year: /\d{4}/,

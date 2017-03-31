@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302164047) do
+ActiveRecord::Schema.define(version: 20170313122750) do
 
   create_table "days", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "date"
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_days_on_user_id", using: :btree
   end
 
   create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -32,8 +31,6 @@ ActiveRecord::Schema.define(version: 20170302164047) do
     t.integer  "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["day_id"], name: "index_time_records_on_day_id", using: :btree
-    t.index ["project_id"], name: "index_time_records_on_project_id", using: :btree
   end
 
   create_table "user_omniauths", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -44,7 +41,6 @@ ActiveRecord::Schema.define(version: 20170302164047) do
     t.string   "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_omniauths_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -65,8 +61,12 @@ ActiveRecord::Schema.define(version: 20170302164047) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "days", "users"
-  add_foreign_key "time_records", "days"
-  add_foreign_key "time_records", "projects"
-  add_foreign_key "user_omniauths", "users"
+  create_table "weekday_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.string   "day_of_week"
+    t.integer  "required_minutes_logged"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
 end

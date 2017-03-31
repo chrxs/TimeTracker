@@ -6,6 +6,9 @@ class User < ApplicationRecord
   has_many :user_omniauths, dependent: :destroy
   has_many :days, dependent: :destroy
   has_many :time_records, through: :days, dependent: :destroy
+  has_many :weekday_settings, dependent: :destroy
+
+  accepts_nested_attributes_for :weekday_settings
 
   def self.from_omniauth!(auth)
     omniauths_params = { provider: auth.provider, uid: auth.uid }
@@ -17,7 +20,13 @@ class User < ApplicationRecord
       }))
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
-      user.is_admin = auth.info.email == 'chris.miller@alliants.com'
+      user.is_admin = true
+      ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].each do |day_of_week|
+        user.weekday_settings.build(
+          day_of_week: day_of_week,
+          required_minutes_logged: day_of_week == "saturday" || day_of_week == "sunday" ? 0 : (8 * 60),
+        )
+      end
     end
   end
 

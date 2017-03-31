@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: time_tracker_api_production
-  username: time_track_apiPI
-  password: <%= ENV['TIME_TRACKER_API_DATABASE_PASSWORD'] %>
+  database: <%= ENV['TIMETRACKERAPI_DATABASE'] %>
+  username: <%= ENV['TIMETRACKERAPI_DATABASE_USERNAME'] %>
+  password: <%= ENV['TIMETRACKERAPI_DATABASE_PASSWORD'] %>
