@@ -5,6 +5,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.from_omniauth!(request.env["omniauth.auth"])
     sign_in @user
     response.headers['Authorization'] = JsonWebToken.encode(user: UserSerializer.new(@user).as_json)
-    render json: { user: @user }, status: 200
+    render json: @user, status: 200
   end
 end
