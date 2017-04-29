@@ -26,9 +26,6 @@ gem "puma", "~> 3.0"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rack-cors"
 
-# Authentication
-gem "devise"
-gem "omniauth-google-oauth2"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
@@ -53,3 +50,4 @@ gem 'jwt', '~> 1.5', '>= 1.5.6'
 gem 'simple_command', '~> 0.0.9'
 gem 'active_model_serializers', '~> 0.10.4'
 gem 'cancancan', '~> 1.16'
+gem 'httparty', '~> 0.13.7'

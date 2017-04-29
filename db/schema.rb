@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313122750) do
+ActiveRecord::Schema.define(version: 20170428155436) do
 
   create_table "days", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "date"
@@ -25,6 +25,22 @@ ActiveRecord::Schema.define(version: 20170313122750) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "teams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name",       default: "", null: false
+    t.string   "slack_uid"
+    t.string   "domain"
+    t.string   "image_34"
+    t.string   "image_44"
+    t.string   "image_68"
+    t.string   "image_88"
+    t.string   "image_102"
+    t.string   "image_132"
+    t.string   "image_230"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["name"], name: "index_teams_on_name", unique: true, using: :btree
+  end
+
   create_table "time_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "project_id"
     t.integer  "day_id"
@@ -33,32 +49,21 @@ ActiveRecord::Schema.define(version: 20170313122750) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_omniauths", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "user_id"
-    t.string   "uid"
-    t.string   "provider"
-    t.string   "name"
-    t.string   "image"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.boolean  "is_admin",               default: false, null: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.string   "email",      default: "",    null: false
+    t.string   "name",       default: "",    null: false
+    t.string   "slack_uid"
+    t.string   "image_24"
+    t.string   "image_32"
+    t.string   "image_48"
+    t.string   "image_72"
+    t.string   "image_192"
+    t.string   "image_512"
+    t.boolean  "is_admin",   default: false, null: false
+    t.integer  "team_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   create_table "weekday_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
