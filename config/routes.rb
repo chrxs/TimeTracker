@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         get 'weekday_settings', to: 'weekday_settings#index'
         put 'weekday_settings', to: 'weekday_settings#update_all'
 
-        post ':year/:month/:day', to: 'days#create', constraints: {
+        post ':year/:month/:day', to: 'days#create_or_update', constraints: {
           year: /\d{4}/,
           month: /\d{2}/,
           day: /\d{2}/,
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       get 'myself', to: 'users#myself'
       get 'weekday_settings', to: 'weekday_settings#index'
 
-      post ':year/:month/:day', to: 'days#create', constraints: {
+      post ':year/:month/:day', to: 'days#create_or_update', constraints: {
         year: /\d{4}/,
         month: /\d{2}/,
         day: /\d{2}/,

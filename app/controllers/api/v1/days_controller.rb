@@ -22,9 +22,16 @@ module Api::V1
     end
 
     # POST /days
-    def create
-      date = "#{ params[:year] }-#{ params[:month] }-#{ params[:day] }"
+    def create_or_update
+      date = [params[:year], params[:month], params[:day]].join("-")
       @day = @user.days.where({ date: date }).first_or_create
+
+      # Remove missing time_records
+      existing_ids = @day.time_records.pluck(:id)
+      update_ids = params[:time_records].pluck(:id).compact
+      remove_ids = existing_ids - update_ids
+      @day.time_records.where(id: remove_ids).destroy_all
+
       if @day.update(day_params)
         render json: @day
       else
@@ -45,7 +52,6 @@ module Api::V1
             :id,
             :project_id,
             :amount,
-            :_destroy,
           ]
         ).tap do |params|
           if params.key?(:time_records)

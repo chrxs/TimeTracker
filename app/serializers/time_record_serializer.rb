@@ -1,7 +1,7 @@
 class TimeRecordSerializer < ActiveModel::Serializer
-  attributes :id, :project_id, :amount, :project_name
+  attributes :id, :amount, :project
 
-  def project_name
-    object.project.name
+  def project
+    ProjectSerializer.new(object.project)
   end
 end
