@@ -1,10 +1,10 @@
 module Api::V1
   class ApiController < ApplicationController
-    # Generic API stuff here
 
-    rescue_from CanCan::AccessDenied do |exception|
-      head :forbidden
-    end
+    private
+      def set_user
+        @user = params[:user_id] ? User.accessible_by(current_ability).find(params[:user_id]) : current_user
+      end
 
   end
 end

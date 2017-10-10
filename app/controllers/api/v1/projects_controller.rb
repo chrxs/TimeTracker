@@ -1,11 +1,10 @@
 module Api::V1
   class ProjectsController < ApiController
-    load_and_authorize_resource
+    load_and_authorize_resource :client
+    load_and_authorize_resource :project, through: :client, shallow: true
 
     # GET /projects
     def index
-      @projects = Project.all
-
       render json: @projects
     end
 

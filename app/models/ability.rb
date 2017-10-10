@@ -7,11 +7,13 @@ class Ability
       user ||= User.new # guest user (not logged in)
       if user.is_admin?
         # can :manage, :all
-        can [:read, :myself], User
-        can :manage, Project
+        can [:read, :myself], User, team_id: user.team.id
+        can :manage, Client, team_id: user.team.id
+        can :manage, Project, client: { team_id: user.team.id }
       else
-        can :myself, User
-        can :read, Project
+        can :myself, User, team_id: user.team.id
+        can :read, Client, team_id: user.team.id
+        can :read, Project, client: { team_id: user.team.id }
       end
     #
     # The first argument to `can` is the action you are giving the user

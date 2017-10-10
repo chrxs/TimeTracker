@@ -7,11 +7,16 @@ module Api::V1
         params["code"],
         params["redirect_uri"]
       )
-      @user = User.from_omniauth!(info)
-      response.headers["Authorization"] = JsonWebToken.encode(
-        user: UserSerializer.new(@user).as_json
+
+      user = User.from_omniauth!(info, access_token)
+      user.team = Team.from_omniauth!(info, access_token)
+
+      token = JsonWebToken.encode(
+        user: UserSerializer.new(user).as_json
       )
-      render json: @user, status: 200
+
+      response.headers["Authorization"] = token
+      render json: user, status: 200
     end
   end
 end

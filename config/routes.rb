@@ -3,26 +3,29 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'auth/slack', to: 'sessions#create'
 
-      resources :projects
+      resources :clients do
+        resources :projects, shallow: true
+      end
 
-      resources :users, only: [:index] do
+      resources :users, only: [:index, :show] do
         get 'weekday_settings', to: 'weekday_settings#index'
         put 'weekday_settings', to: 'weekday_settings#update_all'
 
-        post ':year/:month/:day', to: 'days#create_or_update', constraints: {
+        post 'days/:year/:month/:day', to: 'days#create_or_update', constraints: {
           year: /\d{4}/,
           month: /\d{2}/,
           day: /\d{2}/,
         }
 
-        get '(/:year(/:month(/:day)))', to: 'days#index', constraints: {
+        get 'days/:year/:month/:day', to: 'days#show', constraints: {
           year: /\d{4}/,
           month: /\d{2}/,
           day: /\d{2}/,
         }
+
+        resources :days, only: [:index]
       end
 
-      get 'users/:id', to: 'users#show'
       get 'myself', to: 'users#myself'
       get 'weekday_settings', to: 'weekday_settings#index'
 
@@ -32,12 +35,15 @@ Rails.application.routes.draw do
         day: /\d{2}/,
       }
 
-      get '(:year(/:month(/:day)))', to: 'days#index', constraints: {
+      get ':year/:month/:day', to: 'days#show', constraints: {
         year: /\d{4}/,
         month: /\d{2}/,
         day: /\d{2}/,
       }
 
+      get 'slack', to: 'slack#trigger'
+
+      root to: 'days#index'
     end
   end
 end

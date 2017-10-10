@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :users do |t|
       t.string :email, null: false, default: ""
       t.string :name, null: false, default: ""
-      t.string :slack_uid
+      t.string :slack_uid, null: false, default: ""
       t.string :image_24
       t.string :image_32
       t.string :image_48
@@ -11,11 +11,10 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :image_192
       t.string :image_512
       t.boolean :is_admin, default: 0, null: false
-      t.integer :team_id
 
       t.timestamps null: false
     end
 
-    add_index :users, :email, unique: true
+    add_index :users, :slack_uid, unique: true
   end
 end

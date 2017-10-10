@@ -13,6 +13,5 @@ module Api::V1
     def myself
       render json: current_user
     end
-
   end
 end

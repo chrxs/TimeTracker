@@ -4,27 +4,21 @@ module Api::V1
 
     # GET /days
     def index
-      if !params[:day].blank? && !params[:month].blank? && !params[:year].blank?
-        date = Date.parse("#{ params[:year] }-#{ params[:month] }-#{ params[:day] }")
-        @days = @user.days.where(date: date)
-      elsif params[:day].blank? && !params[:month].blank? && !params[:year].blank?
-        min_date = Date.parse("#{ params[:year] }-#{ params[:month] }-01")
-        max_date = min_date.end_of_month
-        @days = @user.days.where(date: min_date...max_date)
-      elsif params[:day].blank? && !params[:month].blank? && !params[:year].blank?
-        min_date = Date.parse("#{ params[:year] }-01-01")
-        max_date = min_date.end_of_year
-        @days = @user.days.where(date: min_date...max_date)
+      date_range = get_date_range
+      if date_range
+        render json: @user.days.where(date: date_range)
       else
-        @days = @user.days
+        render json: @user.days
       end
-      render json: @days
+    end
+
+    def show
+      render json: @user.days.where(date: get_date).first
     end
 
     # POST /days
     def create_or_update
-      date = [params[:year], params[:month], params[:day]].join("-")
-      @day = @user.days.where({ date: date }).first_or_create
+      @day = @user.days.where({ date: get_date }).first_or_create
 
       # Remove missing time_records
       existing_ids = @day.time_records.pluck(:id)
@@ -41,8 +35,32 @@ module Api::V1
 
 
     private
-      def set_user
-        @user = params[:user_id] ? User.accessible_by(current_ability).find(params[:user_id]) : current_user
+      def get_date_range
+        date_range = nil
+        start_date = nil
+        end_date = nil
+        if params[:start]
+          start_date = Date.parse(params[:start])
+          end_date = params[:end] ? Date.parse(params[:end]) : Date.today
+        elsif params[:end]
+          start_date = params[:start] ? Date.parse(params[:start]) : Date.today
+          end_date = Date.parse(params[:end])
+        end
+        if start_date && end_date
+          if start_date > end_date
+            date_range = end_date..start_date
+          else
+            date_range = start_date..end_date
+          end
+        end
+        date_range
+      end
+
+      def get_date
+        date_parts = params.slice(:year, :month, :day).values()
+        date_parts << Date.today.year if date_parts.empty?
+        date_parts.fill("01", date_parts.size, 3 - date_parts.size)
+        Date.parse(date_parts.join("-"))
       end
 
       # Only allow a trusted parameter "white list" through.

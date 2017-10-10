@@ -15,10 +15,6 @@ module Api::V1
     end
 
     private
-      def set_user
-        @user = params[:user_id] ? User.accessible_by(current_ability).find(params[:user_id]) : current_user
-      end
-
       def weekday_settings_params
         params.permit(
           weekday_settings: [
